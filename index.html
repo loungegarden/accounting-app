@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Бухгалтерія</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+    h2 { text-align: center; }
+    .container {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .section {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      flex: 1;
+      min-width: 320px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 10px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 6px;
+      text-align: center;
+    }
+    input, select {
+      width: 100%;
+      padding: 5px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 8px 12px;
+      cursor: pointer;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    .total {
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Бухгалтерія</h2>
+  <div class="container">
+    <div class="section">
+      <h3>ОБОРОТ ГОТІВКИ</h3>
+      <table id="cashTable">
+        <thead>
+          <tr><th>Дата</th><th>Тип</th><th>Опис</th><th>Сума</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button onclick="addRow('cash')">Додати рядок</button>
+      <div class="total">Разом: <span id="cashTotal">0</span> грн</div>
+    </div>
+    <div class="section">
+      <h3>ДОХІД / ВИТРАТИ</h3>
+      <table id="incomeTable">
+        <thead>
+          <tr><th>Дата</th><th>Тип</th><th>Опис</th><th>Сума</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button onclick="addRow('income')">Додати рядок</button>
+      <div class="total">Разом: <span id="incomeTotal">0</span> грн</div>
+    </div>
+  </div>
+
+<script>
+  function addRow(type) {
+    const tableId = type === 'cash' ? 'cashTable' : 'incomeTable';
+    const tbody = document.getElementById(tableId).querySelector('tbody');
+    const row = document.createElement('tr');
+
+    const typeOptions = type === 'cash' ? ['Прихід', 'Розхід'] : ['Дохід', 'Витрата'];
+
+    row.innerHTML = \`
+      <td><input type="date" onchange="calculateTotals()"></td>
+      <td>
+        <select onchange="calculateTotals()">
+          \${typeOptions.map(opt => \`<option>\${opt}</option>\`).join('')}
+        </select>
+      </td>
+      <td><input type="text" onchange="calculateTotals()"></td>
+      <td><input type="number" value="0" onchange="calculateTotals()"></td>
+    \`;
+
+    tbody.appendChild(row);
+    calculateTotals();
+  }
+
+  function calculateTotals() {
+    ['cash', 'income'].forEach(type => {
+      const tableId = type === 'cash' ? 'cashTable' : 'incomeTable';
+      const tbody = document.getElementById(tableId).querySelector('tbody');
+      let total = 0;
+      tbody.querySelectorAll('tr').forEach(row => {
+        const select = row.cells[1].querySelector('select');
+        const amount = parseFloat(row.cells[3].querySelector('input').value || 0);
+        if (select.value === 'Прихід' || select.value === 'Дохід') {
+          total += amount;
+        } else {
+          total -= amount;
+        }
+      });
+      document.getElementById(type + 'Total').textContent = total.toFixed(2);
+    });
+  }
+</script>
+</body>
+</html>
