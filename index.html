@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Бухгалтерія</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Бухгалтерія</h1>
+  <div class="container">
+    <div class="section">
+      <h2>ОБОРОТ ГОТІВКИ</h2>
+      <table id="cashflow-table">
+        <thead>
+          <tr>
+            <th>Дата</th>
+            <th>Тип</th>
+            <th>Опис</th>
+            <th>Сума</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button onclick="addRow('cashflow-table')">Додати рядок</button>
+      <p><strong>Разом:</strong> <span id="cashflow-total">0</span> грн</p>
+    </div>
+    <div class="section">
+      <h2>ДОХІД / ВИТРАТИ</h2>
+      <table id="income-table">
+        <thead>
+          <tr>
+            <th>Дата</th>
+            <th>Тип</th>
+            <th>Опис</th>
+            <th>Сума</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button onclick="addRow('income-table')">Додати рядок</button>
+      <p><strong>Разом:</strong> <span id="income-total">0</span> грн</p>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
